@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mail>
+  <header>mail</header>
+  <sender>AdamJensen</sender>
+  <receiver>Patrick</receiver>
+  <title>Cześć</title>
+  <datetime>15-01-2015</datetime>
+  <txt_length>40</txt_length>
+  <mail_txt>Tak wiem. Może kiedyś jeszcze popiszemy.</mail_txt>
+  <att_nr>2</att_nr>
+  <attachment>
+    <att_title>gotowiec</att_title>
+    <att_length>5</att_length>
+    <att_data>dfsf</att_data>
+  </attachment>
+  <attachment>
+    <att_title>gotowiec</att_title>
+    <att_length>5</att_length>
+    <att_data>dfsf</att_data>
+  </attachment>
+</mail>
