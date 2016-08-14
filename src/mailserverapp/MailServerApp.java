@@ -33,7 +33,6 @@ import org.jdom2.input.SAXBuilder;
  */
 public class MailServerApp extends javax.swing.JFrame {
 
-    // objects and flags
     static MailServerApp mailServerApp;
     private DataTools tools;
     
@@ -52,27 +51,7 @@ public class MailServerApp extends javax.swing.JFrame {
         
         mailProtocol = new MailProtocol();
         tools = new DataTools();
-        
-        setTitle("E-mail Server");
-        
         initComponents();
-        
-        // retrieve screen resolution
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int w = (int)screenSize.getWidth();
-        int h = (int)screenSize.getHeight();
-        
-        // retrieve window size and set in the middle of the screen 
-        Dimension windowSize = getSize();
-        int x = (int)windowSize.getWidth();
-        int y = (int)windowSize.getHeight();
-        
-        System.out.println("Resolution w: " + w + ", h: " + h);
-        System.out.println("Window Width x: " + x + ", Height Y: " + y);
-        
-        setLocation((w/2)-(x/2), (h/2)-(y/2));
-        setVisible(true);
-        setResizable(false);
         
         readConfigFile();
     }
@@ -117,41 +96,7 @@ public class MailServerApp extends javax.swing.JFrame {
     {
         SSLServerSocketFactory socketFactory = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
     }
-    
-    private void closelButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    	java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
-    }
 
-    /*
-    public void start() throws IOException {
-        System.out.println("Uruchamianie serwera poczty e-mail, port " + port);
-        
-        // connectSSL();
-        // connect();
-        
-        ServerSocket serverSocket = new ServerSocket(port);
-        
-        while (true)
-        {
-            // Oczekiwanie na klientów
-            System.out.println("Oczekiwanie na klientów...");
-            
-            // SSLSocket client = (SSLSocket) sslServerSocket.accept();
-            
-            Socket client = serverSocket.accept();
-            
-            System.out.println("Klient " + client.getInetAddress().getCanonicalHostName() + " się połączył.");
-            
-            //A client has connected to this server. Send welcome message
-            Thread thread = new Thread(new ClientHandler(client));
-            thread.start();
-        }
-        
-        // Gdy klient połączył się z serwerem to serwer wysyła wiadomość powitalną
-        // sendWelcomeMessage(client);
-    }
-    */
-    
     private void sendWelcomeMessage(Socket client) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()))) {
             writer.write("You have been connected to e-mail server.");
@@ -183,29 +128,23 @@ public class MailServerApp extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButtonStart.setText("Start Serwera");
+        jButtonStart.setText("Server start");
         jButtonStart.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStartActionPerformed(evt);
             }
         });
 
-        jLabelPort.setText("Port serwera:");
+        jLabelPort.setText("Server port:");
 
-        jTextFieldPort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldPortActionPerformed(evt);
-            }
-        });
-
-        jButtonStop.setText("Zatrzymaj");
+        jButtonStop.setText("Stop");
         jButtonStop.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonStopActionPerformed(evt);
             }
         });
 
-        jLabelMailsDirectory.setText("Katalog listów:");
+        jLabelMailsDirectory.setText("Mails directory:");
         jTextFieldMailsDirectory.setText("/database/temp_mails");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -267,9 +206,9 @@ public class MailServerApp extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jMenuFileUsersManager.setText("Plik");
+        jMenuFileUsersManager.setText("File");
 
-        jMenuItemRun.setText("Uruchom...");
+        jMenuItemRun.setText("Run...");
         jMenuItemRun.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemRunActionPerformed(evt);
@@ -277,13 +216,13 @@ public class MailServerApp extends javax.swing.JFrame {
         });
         jMenuFileUsersManager.add(jMenuItemRun);
 
-        jMenuItem1.setText("Zarządzaj kontami");
+        jMenuItem1.setText("Manage accounts");
         jMenuFileUsersManager.add(jMenuItem1);
 
-        jMenuItemInfo.setText("Informacje");
+        jMenuItemInfo.setText("Informations");
         jMenuFileUsersManager.add(jMenuItemInfo);
 
-        jMenuItemQuit.setText("Wyjście");
+        jMenuItemQuit.setText("Exit");
         jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemQuitActionPerformed(evt);
@@ -307,6 +246,24 @@ public class MailServerApp extends javax.swing.JFrame {
         );
 
         pack();
+        
+        // retrieve screen resolution
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int w = (int)screenSize.getWidth();
+        int h = (int)screenSize.getHeight();
+        
+        // retrieve window size and set in the middle of the screen 
+        Dimension windowSize = getSize();
+        int x = (int)windowSize.getWidth();
+        int y = (int)windowSize.getHeight();
+        
+        System.out.println("Resolution w: " + w + ", h: " + h);
+        System.out.println("Window Width x: " + x + ", Height Y: " + y);
+        
+        setTitle("E-mail Server");
+        setLocation((w/2)-(x/2), (h/2)-(y/2));
+        setVisible(true);
+        setResizable(false);
     }
 
     private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {
@@ -315,16 +272,16 @@ public class MailServerApp extends javax.swing.JFrame {
                 thread = new Thread(new Socketing());
                 thread.start();
                 
-                jLabelWarning.setText("Serwer uruchomiony! Oczekiwanie na klientów...");
+                jLabelWarning.setText("Server started! Waiting for clients...");
         } catch (NumberFormatException ex) {
                 Logger.getLogger(MailServerApp.class.getName()).log(Level.SEVERE, null, ex);
                 
-                jLabelWarning.setText("Podano nieprawidłową wartość portu!");
+                jLabelWarning.setText("Wrong port value!");
         }
     }
 
     private void jMenuItemQuitActionPerformed(java.awt.event.ActionEvent evt) {
-        closelButtonActionPerformed(evt);
+        jButtonCloseActionPerformed(evt);
     }
 
     private void jMenuItemRunActionPerformed(java.awt.event.ActionEvent evt) {
@@ -332,11 +289,12 @@ public class MailServerApp extends javax.swing.JFrame {
     }
 
     private void jButtonStopActionPerformed(java.awt.event.ActionEvent evt) {
+    	// TODO: implement
     }
 
-    private void jTextFieldPortActionPerformed(java.awt.event.ActionEvent evt) {
+    private void jButtonCloseActionPerformed(java.awt.event.ActionEvent evt) {
+    	java.awt.Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
     }
-
     
     //////////////////////////
     //// MAIN THREAD
@@ -360,7 +318,6 @@ public class MailServerApp extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MailServerApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -398,26 +355,26 @@ public class MailServerApp extends javax.swing.JFrame {
 	        // connectSSL();
 	        
 	        ServerSocket serverSocket;
-	            try {
-	                System.out.println("Starting e-mail server, port " + jTextFieldPort.getText());  
-	                port = Integer.parseInt(jTextFieldPort.getText());
-	                
-	                serverSocket = new ServerSocket(port);
-	
-	                while (true)
-	                {
-	                    System.out.println("Waiting for clients...");
-	
-	                    // SSLSocket client = (SSLSocket) sslServerSocket.accept();
-	
-	                    Socket client = serverSocket.accept();
-	
-	                    System.out.println("Client " + client.getInetAddress().getCanonicalHostName() + " has connected.");
-	
-	                    // A client has connected to this server. Send welcome message
-	                    Thread thread = new Thread(new ClientHandler(client));
-	                    thread.start();
-	                }
+	        try {
+                System.out.println("Starting e-mail server, port " + jTextFieldPort.getText());  
+                port = Integer.parseInt(jTextFieldPort.getText());
+                
+                serverSocket = new ServerSocket(port);
+
+                while (true)
+                {
+                    System.out.println("Waiting for clients...");
+
+                    // SSLSocket client = (SSLSocket) sslServerSocket.accept();
+
+                    Socket client = serverSocket.accept();
+
+                    System.out.println("Client " + client.getInetAddress().getCanonicalHostName() + " has connected.");
+
+                    // A client has connected to this server. Send welcome message
+                    Thread thread = new Thread(new ClientHandler(client));
+                    thread.start();
+                }
 	        } catch (IOException ex) {
 	            Logger.getLogger(MailServerApp.class.getName()).log(Level.SEVERE, null, ex);
 	        }

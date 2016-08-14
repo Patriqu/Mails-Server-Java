@@ -371,11 +371,6 @@ public class ClientHandler implements Runnable {
 		obWriter.writeUTF(new Date().toString());
 		obWriter.flush();
    }
-
-   private void sendWelcomeMessage(Socket client) throws IOException {
-       obWriter.writeUTF("NawiÄ…zaĹ‚eĹ› poĹ‚Ä…czenie z serwerem poczty e-mail.");
-       obWriter.flush();
-   }
    
    private void closeBuffers() throws IOException
    {
@@ -410,8 +405,8 @@ public class ClientHandler implements Runnable {
            // get root node from xml  
            Element rootNode = document.getRootElement();           
            
-           System.out.println("Login w szukajce: " + login);
-           System.out.println("Passwd w szukajce: " + passwd);
+           System.out.println("Login in searcher: " + login);
+           System.out.println("Passwd in searcher: " + passwd);
            
            for (Element node : rootNode.getChildren("user"))
            {
@@ -419,13 +414,13 @@ public class ClientHandler implements Runnable {
                String clogin = node.getAttribute("login").getValue();
                String cpasswd = node.getAttribute("password").getValue();
                
-               System.out.println("Szukany login: " + clogin);
-               System.out.println("Szukany password: " + cpasswd);
+               System.out.println("Searched login: " + clogin);
+               System.out.println("Searched password: " + cpasswd);
                
                // if login and password are found in database
                if (login.equals(clogin) && passwd.equals(cpasswd))
                {
-                   System.out.println("Podany login i hasĹ‚o znaleziono w bazie");
+                   System.out.println("Login and password found in database");
                    System.out.println("Login : " + login);
                    System.out.println("Password : " + passwd);
                    System.out.println("");
