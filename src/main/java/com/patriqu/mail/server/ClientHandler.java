@@ -1,4 +1,4 @@
-package mailserverapp;
+package com.patriqu.mail.server;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -9,13 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import mailprotocol.MailProtocol;
@@ -40,6 +36,8 @@ public class ClientHandler implements Runnable {
   private Queue<String> queueMails;
   
   private String user;
+
+  private final String tempMailsPath = "database/temp_mails/";
 
   public ClientHandler(Socket client) throws IOException {
         tools = new DataTools();
@@ -85,12 +83,9 @@ public class ClientHandler implements Runnable {
     }
   
     
-    private int getNumberOfNewMails(String user)
-    {
-        File file = new File("database/temp_mails/" + user);
-        int nr = file.list().length;
-        
-        return nr;
+    private int getNumberOfNewMails(String user) throws IOException {
+        File file = Files.createDirectories(Paths.get(tempMailsPath + user)).toFile();
+        return Objects.requireNonNull(file.list()).length;
     }
     
     private String saveMail(Map<String, Object> m)
@@ -104,7 +99,7 @@ public class ClientHandler implements Runnable {
             System.out.println("Client " + receiver + " is offline!");
         
             try {
-                String destDir = "database/temp_mails/" + m.get("receiver") + "/" + m.get("title") + "/";
+                String destDir = tempMailsPath + m.get("receiver") + "/" + m.get("title") + "/";
                 
                 //////////////////
                 //// MAIL SAVING 
@@ -241,8 +236,8 @@ public class ClientHandler implements Runnable {
                     this.user = login;                             		 // save user id in user handler
                     
                     //// ADD MAILS TO QUEUE
-                    File file = new File("database/temp_mails/" + login);
-                    String list[] = file.list();
+                    File file = new File(tempMailsPath + login);
+                    String[] list = file.list();
 
                     queueMails.addAll(Arrays.asList(list));             // add mails from folder of waiting mails for this user to queue
                 }
@@ -286,7 +281,7 @@ public class ClientHandler implements Runnable {
             }
             else if (in.equals("MAIL SUCCESS"))
             {                
-                String dirName = "database/temp_mails/" + this.user + "/" + queueMails.element();
+                String dirName = tempMailsPath + this.user + "/" + queueMails.element();
                 
                 File dir = new File(dirName);       	// remove mail from folder on the server
                 String lista[] = dir.list();
