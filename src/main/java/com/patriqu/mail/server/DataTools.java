@@ -1,6 +1,5 @@
 package com.patriqu.mail.server;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,9 +42,6 @@ public class DataTools {
     
     public boolean isOnline(String us)
     {
-        if (usersOnline.contains(us))
-            return true;
-        else
-            return false;
+        return usersOnline.contains(us);
     }
 }

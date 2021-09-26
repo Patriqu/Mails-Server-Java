@@ -58,33 +58,28 @@ public class BrowseFolderWindow extends javax.swing.JFrame {
       pnl.add(btn);
 
       btn = new JButton("JFileChooser.showSaveDialog() Demo");
-      al = new ActionListener()
-           {
-              @Override
-              public void actionPerformed(ActionEvent ae)
-              {
-                 switch (fc.showSaveDialog(BrowseFolderWindow.this))
-                 {
-                    case JFileChooser.APPROVE_OPTION:
-                       JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Selected: "+
-                                                     fc.getSelectedFile(),
-                                                     "FCDemo",
-                                                     JOptionPane.OK_OPTION);
-                       break;
+      al = ae -> {
+         switch (fc.showSaveDialog(BrowseFolderWindow.this))
+         {
+            case JFileChooser.APPROVE_OPTION:
+               JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Selected: "+
+                                             fc.getSelectedFile(),
+                                             "FCDemo",
+                                             JOptionPane.OK_OPTION);
+               break;
 
-                    case JFileChooser.CANCEL_OPTION:
-                       JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Cancelled",
-                                                     "FCDemo",
-                                                     JOptionPane.OK_OPTION);
-                       break;
-                 
-                    case JFileChooser.ERROR_OPTION:
-                       JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Error",
-                                                     "FCDemo",
-                                                     JOptionPane.OK_OPTION);
-                 }
-              }
-           };
+            case JFileChooser.CANCEL_OPTION:
+               JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Cancelled",
+                                             "FCDemo",
+                                             JOptionPane.OK_OPTION);
+               break;
+
+            case JFileChooser.ERROR_OPTION:
+               JOptionPane.showMessageDialog(BrowseFolderWindow.this, "Error",
+                                             "FCDemo",
+                                             JOptionPane.OK_OPTION);
+         }
+      };
       btn.addActionListener(al);
       pnl.add(btn);
     }

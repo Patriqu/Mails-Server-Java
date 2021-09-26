@@ -123,20 +123,12 @@ public class MailServerApp extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButtonStart.setText("Server start");
-        jButtonStart.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonStartActionPerformed(evt);
-            }
-        });
+        jButtonStart.addActionListener(this::jButtonStartActionPerformed);
 
         jLabelPort.setText("Server port:");
 
         jButtonStop.setText("Stop");
-        jButtonStop.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonStopActionPerformed(evt);
-            }
-        });
+        jButtonStop.addActionListener(this::jButtonStopActionPerformed);
 
         jLabelMailsDirectory.setText("Mails directory:");
         jTextFieldMailsDirectory.setText("/database/temp_mails");
@@ -203,11 +195,7 @@ public class MailServerApp extends javax.swing.JFrame {
         jMenuFileUsersManager.setText("File");
 
         jMenuItemRun.setText("Run...");
-        jMenuItemRun.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemRunActionPerformed(evt);
-            }
-        });
+        jMenuItemRun.addActionListener(this::jMenuItemRunActionPerformed);
         jMenuFileUsersManager.add(jMenuItemRun);
 
         jMenuItem1.setText("Manage accounts");
@@ -217,11 +205,7 @@ public class MailServerApp extends javax.swing.JFrame {
         jMenuFileUsersManager.add(jMenuItemInfo);
 
         jMenuItemQuit.setText("Exit");
-        jMenuItemQuit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemQuitActionPerformed(evt);
-            }
-        });
+        jMenuItemQuit.addActionListener(this::jMenuItemQuitActionPerformed);
         jMenuFileUsersManager.add(jMenuItemQuit);
 
         jMenuBar1.add(jMenuFileUsersManager);
@@ -294,7 +278,7 @@ public class MailServerApp extends javax.swing.JFrame {
     //// MAIN THREAD
     //////////////////////////
     
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -312,12 +296,9 @@ public class MailServerApp extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(MailServerApp.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
 
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                mailServerApp = new MailServerApp();
-                mailServerApp.setVisible(true);
-            }    
+        java.awt.EventQueue.invokeLater(() -> {
+            mailServerApp = new MailServerApp();
+            mailServerApp.setVisible(true);
         });
     }
     

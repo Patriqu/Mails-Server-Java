@@ -63,16 +63,14 @@ public class ClientHandler implements Runnable {
 
 		readResponse();
      } catch (IOException | InterruptedException e) {
-     } catch (ClassNotFoundException ex) {
-        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-     } catch (JDOMException ex) {
+     } catch (ClassNotFoundException | JDOMException ex) {
         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
      }
   }
 
     public void readMailFrame() throws IOException {
       try { 
-          String myMessageArray[] = (String[]) obReader.readObject();
+          String[] myMessageArray = (String[]) obReader.readObject();
           
           System.out.println("Table element 0: " + myMessageArray[0]);
           System.out.println("Table element 1: " + myMessageArray[1]);
@@ -147,7 +145,6 @@ public class ClientHandler implements Runnable {
 
                         fis.write(bytes, 0, bytes.length);
                         fis.flush();
-                        fis.close();
                     } catch (FileNotFoundException ex) {
                         Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -362,7 +359,7 @@ public class ClientHandler implements Runnable {
    }
    
   
-   private void sendTime() throws IOException, InterruptedException {
+   private void sendTime() throws IOException {
 		obWriter.writeUTF(new Date().toString());
 		obWriter.flush();
    }
